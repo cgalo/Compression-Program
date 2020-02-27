@@ -12,8 +12,12 @@ private:
     int *array;
     int capacity;
     int currentSize;
+    int parent(int i) { return (i-2/2);}
+    int left(int i){return (2*i + 1); }
+    int right(int i){return (2*i + 2);}
 public:
     MinHeap();
+    void insertHeap(int data);
 };
 
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>  //To read & write files
 #include "sortedLL.h"
-#include "HuffTree.h"
+#include "MinHeap.h"
 using namespace std;
 
 
@@ -10,9 +10,20 @@ const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 void readFile();
 
 int main() {
-    HuffTree* tree = new HuffTree;
 
-    readFile();
+    MinHeap* min = new MinHeap;
+    min->insertKey(3);
+    min->insertKey(2);
+    min->insertKey(1);
+    min->insertKey(15);
+    min->insertKey(5);
+    min->insertKey(4);
+    min->insertKey(45);
+    min->print();
+
+    //HuffTree* tree = new HuffTree;
+
+    //readFile();
     /*sortedLL * LL = new sortedLL;
     LL->insert('c');
     LL->insert('a');
@@ -57,7 +68,7 @@ void interface()
 
 }
 
-void readFile(HuffTree* tree)
+void readFile()
 {
     ifstream file (filePath, ios::in | ios::binary);    //Read the file as binary
     if (!file)      //If file is not found or unable to open
@@ -68,9 +79,9 @@ void readFile(HuffTree* tree)
 
         while (file >> noskipws >> tempChar)    //Loop through each character in the file
         {
-            tree->frequencyTable->insert(tempChar);
+            //tree->frequencyTable->insert(tempChar);
         }   //End of while-loop
-        LL->printLL();
-        std::cout << "Length: " << LL->getLength() << std::endl;
+        //LL->printLL();
+        //std::cout << "Length: " << LL->getLength() << std::endl;
     }   //End of else, if we could find and open the file
 }

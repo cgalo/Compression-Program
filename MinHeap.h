@@ -12,12 +12,19 @@ private:
     int *array;
     int capacity;
     int currentSize;
+    void swap(int *x, int *y);
     int parent(int i) { return (i-2/2);}
     int left(int i){return (2*i + 1); }
     int right(int i){return (2*i + 2);}
+
+    void heapify(int i);
 public:
     MinHeap();
-    void insertHeap(int data);
+    ~MinHeap();
+    void insertKey(int data);
+    void decreaseKey(int i, int new_val);
+    int extractMin();
+    void print();
 };
 
 

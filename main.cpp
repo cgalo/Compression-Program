@@ -1,14 +1,10 @@
 #include <iostream>
-#include <fstream>  //To read & write files
-#include "sortedLL.h"
 #include "MinHeap.h"
 #include "HUFF.h"
 
 void interface      (std::string cmd, std::string input, HUFF* huff);    //Declaring the menu function
-void toUpper        (std::string* word);                    //Declaring the toUpper function
 std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
 bool checkWord      (std::string word);                     //Declaring checkWord function
-void readFile();
 
 const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 
@@ -17,7 +13,6 @@ const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 
 int main()
 {
-
     HUFF * huff = new HUFF; //Initiate the huff object
     while (true)
     {
@@ -49,8 +44,7 @@ int main()
     }   //End of while-loop, only breaks out of it if user enters HUFF -end or HUFF -exit
     //We are here if the user used the exit cmd
     return 0;
-}
-
+}   //End of main function
 
 void interface(std::string cmd, std::string input, HUFF* huff)
 {
@@ -151,32 +145,6 @@ void interface(std::string cmd, std::string input, HUFF* huff)
     else                                //Else not a valid cmd
         std::cout << "Invalid command, check commands with: HUFF -?" << std::endl;  //Output error
 }   //End of interface function
-
-void readFile()
-{
-    std::ifstream file (filePath, std::ios::in | std::ios::binary);    //Read the file as binary
-    if (!file)      //If file is not found or unable to open
-        std::cout << "Error! File not found" << std::endl;  //Throw error
-    else            //Else we could find and open the file
-    {
-        sortedLL* LL = new sortedLL;
-        char tempChar;   //Create variable to read char by char of the file
-
-        while (file >> std::noskipws >> tempChar)    //Loop through each character in the file
-        {
-            LL->insert(tempChar);
-        }   //End of while-loop
-        LL->printLL();
-        std::cout << "Length: " << LL->getLength() << std::endl;
-    }   //End of else, if we could find and open the file
-}
-
-
-//Function takes pointer/reference of a string and converts it into uppercase
-void toUpper (std::string* word)
-{
-    for (auto & c: *word) c = toupper(c);
-}   //End of toUpper function
 
 std::string getWord (std::string line, int wordIndex)
 {

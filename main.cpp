@@ -48,8 +48,7 @@ int main()
         else                                                    //Else the first word in the line is not 'HUFF'
             std::cout << std::endl;                             //Output empty line
     }   //End of while-loop, only breaks out of it if user enters HUFF -end or HUFF -exit
-
-    //delete tree;
+    //We are here if the user used the exit cmd
     return 0;
 }
 

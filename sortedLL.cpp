@@ -30,7 +30,7 @@ int sortedLL::getLength(){ return length;}
 
 bool sortedLL::isEmpty() { return (head == NULL) ? true : false; }
 
-sortedLL::Node* sortedLL::search(char c)
+sortedLL::Node* sortedLL::search(unsigned char c)
 {
     Node* currentNode = head;   //Start from the head of the LL
 
@@ -45,7 +45,7 @@ sortedLL::Node* sortedLL::search(char c)
     return NULL;    //Return NULL
 }   //End of sorted method
 
-void sortedLL::insert(char c)
+void sortedLL::insert(unsigned char c)
 {
     if (isEmpty())  //If the LL is empty
     {
@@ -121,14 +121,10 @@ void sortedLL::printLL()
     }   //End of else, the tree is not empty
 }   //End of printLL method
 
-sortedLL::Node* sortedLL::min()
-{
-    return head;
-}
 
 sortedLL::Node * sortedLL::returnMin()
 {
-    return min();
+    return head;
 }
 
 void sortedLL::deleteMin()

@@ -29,9 +29,12 @@ private:
             this->weight = weight;
             LCH = RCH = parent = NULL;
         }
-    };
-    Node** array;
-    Node* root;
+    };  //End of struct Node
+    //Node** array;
+    Node* root;                                 //The top of the tree
+    sortedLL* freqTable;
+    void buildFreqTable(std::string inputFile); //Opens and reads file char by char and inserts it into freqTable
+    void buildHuffTree()
 public:
     HUFF();
     ~HUFF();

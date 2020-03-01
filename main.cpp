@@ -10,14 +10,16 @@ std::string getWord (std::string line, int wordIndex);      //Declaring getWord 
 bool checkWord      (std::string word);                     //Declaring checkWord function
 void readFile();
 
-const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
+const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/Hamlet.txt";
 
 
 
 
 int main()
 {
-    HUFF* huff = new HUFF;
+
+    HUFF * huff = new HUFF;
+
     while (true)
     {
         std::string input;  //Create string to accept the input of the user
@@ -71,13 +73,14 @@ void interface(std::string cmd, std::string input, HUFF* huff)
     {
         //Here we encode the file from the user, but first we check if the user provided an output file
         if (checkOutFile)           //If the user did not provide an output file
-            huff->EncodeFile(inputFile, NULL);
+            huff->EncodeFile(filePath, NULL);
         else                        //Else the user provided an output file
-            huff->EncodeFile(inputFile, outputFile);
+            huff->EncodeFile(filePath, outputFile);
     }   //End of Encode cmd
 
     else if (cmd == "-d")               //Decode
     {
+        std::cout << "d" << std::endl;
         //We are required to have two file paths
         if (checkInputFile == true && checkOutFile == true) //If the user provided an input and output file
         {
@@ -88,6 +91,7 @@ void interface(std::string cmd, std::string input, HUFF* huff)
     }
     else if (cmd == "-t")   //Create a tree-building file
     {
+        std::cout << "t" << std::endl;
         /* Required: input file,*/
     }   //End of tree-building cmd
 
@@ -96,11 +100,13 @@ void interface(std::string cmd, std::string input, HUFF* huff)
         /* Required files: input file, tree file
          * Optional: output file
          * */
+
         std::string treeFile = outputFile;
         bool checkTreeFile = checkOutFile;
 
         if (checkTreeFile)  //Tree File is required
         {
+            std::cout << "et" << std::endl;
             outputFile = getWord(inputFile, 5); //Optional output file
             checkOutFile = checkWord(outputFile);
             if (checkOutFile)

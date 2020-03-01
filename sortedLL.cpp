@@ -121,11 +121,26 @@ void sortedLL::printLL()
     }   //End of else, the tree is not empty
 }   //End of printLL method
 
-
-sortedLL::Node * sortedLL::returnMin()
+unsigned char sortedLL::getMinData()
 {
-    return head;
+    /* Objective: Return the current head's data
+     * Cases:
+     *  1. Head is not null, return head's data
+     *  2. Head is NULL, return NULL
+     *  */
+    return (head != NULL) ? head->data : NULL;
+}   //End of getMinData method
+
+int sortedLL::getMinCount()
+{
+    /* Objective: Return the current head's count
+     * Cases:
+     *  1. Head is not null, return head's count
+     *  2. Head is NULL, return NULL
+     *  */
+    return (head != NULL) ? head->count : NULL;
 }
+
 
 void sortedLL::deleteMin()
 {

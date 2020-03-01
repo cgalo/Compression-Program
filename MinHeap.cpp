@@ -2,6 +2,10 @@
 // Created by Carlos Galo on 2/26/20.
 //
 
+
+/////Work on testing this class with Nodes and their weight to build a Huffman MinHeap
+
+
 #include "MinHeap.h"
 #include <iostream>
 MinHeap::MinHeap()

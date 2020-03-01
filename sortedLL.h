@@ -25,7 +25,8 @@ private:
     int length;
     void sortLL();
     Node* search(unsigned char c);
-    Node* min();
+
+
 public:
     sortedLL();             //Constructor
     ~sortedLL();            //Destructor, garbage collection
@@ -33,8 +34,10 @@ public:
     bool isEmpty();         //Return true if head is NULL, else return false
     void insert (unsigned char c);   //Insert a new node in the LL, or update count if node already exist with the give char
     void printLL();         //Print all nodes' data &  count in the LL
-    Node* returnMin();      //Return the current head of the node
+
     void deleteMin();
+    unsigned char getMinData();
+    int getMinCount();
 
 
 };

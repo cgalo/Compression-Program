@@ -17,7 +17,8 @@ private:
         unsigned char data;
         int weight;
         Node *LCH, *RCH, *parent;
-        Node(char data)
+        Node (): data('\0'), weight(0), LCH(NULL), RCH(NULL), parent(NULL){}
+        Node(unsigned char data)
         {
             this->data = data;
             weight = 1;
@@ -33,17 +34,20 @@ private:
     //Node** array;
     Node* root;                                 //The top of the tree
     sortedLL* freqTable;
+    int fileSize;
+
     void buildFreqTable(std::string inputFile); //Opens and reads file char by char and inserts it into freqTable
-    void buildHuffTree()
+    void buildHuffTree();
 public:
     HUFF();
     ~HUFF();
 
+    void EncodeFile(std::string inputFile, std::string outputFile);
     void DecodeFile(std::string inputFile, std::string outputFile);
     void MakeTreeBuilder(std::string inputFile, std::string ouputFile);
     void DisplayHelp();
 
-    void EncodeFile(std::string inputFile, std::string outputFile);
+
 };
 
 

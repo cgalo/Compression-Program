@@ -5,6 +5,9 @@
 #ifndef HUFF_MINHEAP_H
 #define HUFF_MINHEAP_H
 
+
+/////Work on testing this class with Nodes and their weight to build a Huffman MinHeap
+
 const int maxLength = 256;
 
 class MinHeap {

@@ -7,7 +7,7 @@
 HUFF::HUFF()
 {
     root = NULL;
-
+    fileSize = 0;
     freqTable = new sortedLL;
 };
 
@@ -48,11 +48,21 @@ void HUFF::buildFreqTable(std::string inputFile)
         std::cout << "Error! File not found" << std::endl;  //Throw error
     else            //Else we could find and open the file
     {
+        //Get the file size
+        file.seekg(0, std::ios::beg);
+        int start = file.tellg();
+        file.seekg(0, std::ios::end);
+        int stop  = file.tellg();
+        file.seekg(0, std::ios::beg);
+        fileSize = stop - start;
+        //Finish calculating file size
+        std::cout << "File Size: " << std::endl;
         char tempChar;   //Create variable to read char by char of the file
+
         while (file >> std::noskipws >> tempChar)    //Loop through each character in the file
-        {
-            freqTable->insert(tempChar);
-        }   //End of while-loop
+            freqTable->insert(tempChar);             //Save the current char in the freqTable
+
+        file.close();   //Close the file
         freqTable->printLL();
         std::cout << "Length: " << freqTable->getLength() << std::endl;
     }   //End of else, if we could find and open the file
@@ -64,13 +74,42 @@ void HUFF::EncodeFile(std::string inputFile, std::string outputFile)
     buildFreqTable(inputFile);  //Build the frequency table from the file
     if (!freqTable->isEmpty())  //If there were no issues reading the file
     {
-
+        //Build the huffman tree
+        buildHuffTree();
     }   //End of if the freqTable was build
     else                        //Else there was an error opening/reading the file
         return;                 //Exit the method
-}
+}   //End of EncodeFile method
 
+void HUFF::buildHuffTree()
+{
+    //Loop until freqTable is empty
+    while (!freqTable->isEmpty())
+    {
+        //Create a left node that will be the min of the freqTable
+        Node* leftChild = new Node(freqTable->getMinData());
+        leftChild->weight = freqTable->getMinCount();
+        freqTable->deleteMin();
 
+        //Create a right node that will be the min of the freqTable
+        Node* rightChild = new Node(freqTable->getMinData());
+        rightChild = new Node(freqTable->getMinData());
+        freqTable->deleteMin();
+
+        //Create a parent node, will not have data, but will have weight combined of its children
+        Node* parentNode = new Node(leftChild->weight + rightChild->weight);
+
+        //Connect the parent node to the children, and the children to the parent node
+        parentNode->LCH = leftChild;
+        leftChild->parent = parentNode;
+        parentNode->RCH = rightChild;
+        rightChild->parent = parentNode;
+
+        std::cout << "Left: " << leftChild->data << std::endl;
+        std::cout << "Right: " << rightChild->data << std::endl;
+        break;
+    }   //End of while-loop
+}   //End of buildHuffTree method
 
 void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
 {

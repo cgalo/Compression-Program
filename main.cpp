@@ -57,10 +57,10 @@ int main()
 void interface(std::string cmd, std::string input, HUFF* huff)
 {
 
-    std::string inputFile = getWord(input, 3);    //Get the word after the cmd, aka inputFile
-    std::string outputFile =  getWord(input, 4);  //Get the 3rd word after the cmd, outputFile
-    bool checkInputFile = checkWord(inputFile);             //True if user gave us a input file
-    bool checkOutFile = checkWord(outputFile);              //True if the user gave us an output file
+    std::string inputFile = getWord(input, 3);   //Get the word after the cmd, aka inputFile
+    std::string outputFile =  getWord(input, 4); //Get the 3rd word after the cmd, outputFile
+    bool checkInputFile = checkWord(inputFile); //True if user gave us a input file
+    bool checkOutFile = checkWord(outputFile);  //True if the user gave us an output file
 
     if (cmd == "-e")                    //Encode
     {

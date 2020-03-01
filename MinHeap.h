@@ -24,7 +24,7 @@ public:
     void insertKey(int data);
     void decreaseKey(int i, int new_val);
     int extractMin();
-    void print();
+void print();
 };
 
 

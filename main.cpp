@@ -154,84 +154,6 @@ void interface(std::string cmd, std::string input, HUFF* huff)
         std::cout << "Invalid command, check commands with: HUFF -?" << std::endl;  //Output error
 }   //End of interface function
 
-/*void interface2(std::string cmd, int ma)
-{
-    //Check if the user input a word with the cmd
-    bool wordCheck = checkWord(word);
-    //C++ does not support switch statement with a string/char array so I'll use if-else statements through out
-    if (cmd == "INSERT")                        //If the cmd is insert
-    {
-        if (wordCheck == false)                 //If the user did not input a word to insert with the cmd
-            std::cout << std::endl;             //Print empty line, do not insert
-        else                                    //Else the user did provide a word to insert with the cmd
-            tree->insert(word);                  //Insert the provided word to the BST
-    }   //End of if the cmd == "INSERT"
-    else if (cmd == "DELETE")                   //Else if the cmd is delete
-    {
-        if (wordCheck == false)                 //If the user did not input a second word
-            std::cout << std::endl;             //Output empty line, as we need a word w/ the cmd
-        else                                    //Else user input a cmd w/ a word
-            tree->remove(word);                  //We call the tree's remove method and pass the word given
-    }   //End of else-if cmd == "DELETE"
-    else if (cmd == "SEARCH")                   //Else if the cmd is search
-    {
-        if (wordCheck == false)                 //If the user did not input a word
-            std::cout << std::endl;
-        else                                    //Else the user input a word
-            tree->search(word);                  //Call the tree's search function
-    }   //End of else-if cmd == "SEARCH"
-    else if (cmd == "MIN")                      //Else if the cmd is min
-    {
-        tree->min();                             //Call the min method in the tree
-    }   //End of else-if cmd == "MIN"
-    else if (cmd == "MAX")                      //Else if the cmd is max
-    {
-        tree->max();                             //Call the max method of the tree, we do not need a word w/ the cmd
-    }   //End of else-if cmd == "MAX"
-    else if (cmd == "NEXT")
-    {
-        if (wordCheck == false)                 //If the user did not input a second word
-            std::cout << std::endl;
-        else
-            tree->next(word);
-
-    }   //End of else-if cmd == "NEXT"
-    else if (cmd == "PREV")
-    {
-        if (wordCheck == false)
-            std::cout << std::endl;
-        else
-            tree->previous(word);
-    }   //End of else-if cmd == "PREV"
-    else  if (cmd == "PARENT")
-    {
-        if(wordCheck == false)                //If the user did not provide a string with the cmd
-            std::cout << std::endl;           //Output an empty line
-        else
-            tree->parent(word);                //Call the parent method of the tree
-    }   //End of else-if cmd == "PARENT"
-    else if (cmd == "CHILD")
-    {
-        if (wordCheck == false)               //If the user did not provide a word w/ the cmd
-            std::cout << std::endl;           //Output empty line
-        else                                  //Else the user did provide a word w/ the cmd
-            tree->children(word);              //Call the children function from the tree
-    }   //End of else-if cmd == "CHILD"
-    else if (cmd == "LIST")
-    {
-        tree->printTree();       //Prints in-order traversal of the tree node's, outputs all the node's data and count
-    }   //End of else-if cmd == "LIST
-    else if (cmd == "HELP")
-    {
-        showHelp();
-    }   //End of else-if cmd == "HELP"
-    else
-    {
-        std::cout << std::endl; //Print empty line
-    }   //End of else, the user input a wrong cmd
-
-}*/
-
 void readFile()
 {
     std::ifstream file (filePath, std::ios::in | std::ios::binary);    //Read the file as binary
@@ -307,17 +229,6 @@ bool checkWord (std::string word)
     else                            //Else the user did input a cmd with a word
         return true;                //Return true
 }   //End of checkWord function
-
-
-/*
-//std::cout << "et" << std::endl;
-outputFile = getWord(inputFile, 5); //Optional output file
-checkOutFile = checkWord(outputFile);
-if (checkOutFile)
-{
-
-}*/
-
 
 /*
     MinHeap* min = new MinHeap;

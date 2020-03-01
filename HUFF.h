@@ -39,11 +39,11 @@ public:
     HUFF();
     ~HUFF();
 
-    void EncodeFile(std::string inputFile, std::string outputFile);
     void DecodeFile(std::string inputFile, std::string outputFile);
     void MakeTreeBuilder(std::string inputFile, std::string ouputFile);
     void DisplayHelp();
 
+    void EncodeFile(std::string inputFile, std::string outputFile);
 };
 
 

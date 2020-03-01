@@ -18,8 +18,7 @@ const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 int main()
 {
 
-    HUFF * huff = new HUFF;
-
+    HUFF * huff = new HUFF; //Initiate the huff object
     while (true)
     {
         std::string input;  //Create string to accept the input of the user
@@ -33,7 +32,7 @@ int main()
 
             if (cmd == "-exit" || cmd == "-end")                //If the command entered was 'EXIT'
             {
-                //Delete the huff obj
+                delete huff;                                    //Perform garbage-collection to the HUFF object
                 break;                                          //Exit the while-loop/ the program
             }   //End of if the cmd was exit/end
             else if (cmd == "error")                            //User did not provide a cmd

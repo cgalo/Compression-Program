@@ -8,7 +8,6 @@ void interface      (std::string cmd, std::string input, HUFF* huff);    //Decla
 void toUpper        (std::string* word);                    //Declaring the toUpper function
 std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
 bool checkWord      (std::string word);                     //Declaring checkWord function
-void showHelp       ();                                     //Declaring showHelp function
 void readFile();
 
 const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
@@ -25,18 +24,28 @@ int main()
         std::cout<< "";
         std::getline (std::cin, input); //Get the whole input of the user
         //Now we need to split the input to get the cmd and the word we want to store
-        std::string cmd = getWord(input, 1);      //Get the first word in the input and save as cmd
-        toUpper(&cmd);                                      //Convert the cmd into upper case
-
-        if (cmd == "-EXIT" || cmd == "-END")                //If the command entered was 'EXIT'
-            break;                                          //Exit the while-loop/ the program
-        else                                                //Else the command was not 'EXIT'
+        std::string strHuff = getWord(input, 1);    //Get the first word in the input and save as cmd
+        if (strHuff == "HUFF")                                 //If the first word is "HUFF"
         {
-            //std::string word = getWord (input, 2);//Get the second word of the input
-            //Now we can call the menu and check the input
-            interface(cmd, input, huff);
-        }
-    }   //End of while-loop
+            std::string cmd = getWord(input, 2);    //Get the cmd from the user
+
+            if (cmd == "-exit" || cmd == "-end")                //If the command entered was 'EXIT'
+            {
+                //Delete the huff obj
+                break;                                          //Exit the while-loop/ the program
+            }   //End of if the cmd was exit/end
+            else if (cmd == "error")                            //User did not provide a cmd
+                std::cout << "Please enter a cmd" << std::endl;
+            else                                                //Else the command was not 'EXIT'
+            {
+                //std::string word = getWord (input, 2);//Get the second word of the input
+                //Now we can call the menu and check the input
+                interface(cmd, input, huff);
+            }   //End of else, if the cmd was not error or exit
+        }   //End of if the first word is "HUFF"
+        else                                                    //Else the first word in the line is not 'HUFF'
+            std::cout << std::endl;                             //Output empty line
+    }   //End of while-loop, only breaks out of it if user enters HUFF -end or HUFF -exit
 
     //delete tree;
     return 0;
@@ -46,36 +55,70 @@ int main()
 void interface(std::string cmd, std::string input, HUFF* huff)
 {
 
-    std::string inputFile = getWord(input, 2);  //Get the word after the cmd, aka inputFile
-    std::string outputFile =  getWord(input, 3);//Get the 2nd word after the cmd, outputFile
+    std::string inputFile = getWord(input, 3);  //Get the word after the cmd, aka inputFile
+    std::string outputFile =  getWord(input, 4);//Get the 3rd word after the cmd, outputFile
     bool checkInputFile = checkWord(inputFile); //True if user gave us a input file
     bool checkOutFile = checkWord(outputFile);  //True if the user gave us an output file
 
-
-    if (cmd == "-e")                    //Encode
+    if (!checkInputFile)
     {
-        //The user is required the filename, and optional 2nd file
+        //If the user did not provide an input file, output error
+        std::cout << "Error! Please enter an input file" << std::endl;
+        return; //Exit interface function
+    }
 
-        if (checkInputFile)    //If there was no filename after the cmd
-        {
-            //Here we encode the file from the user, but first we check if the user provided an output file
-            if (checkOutFile)           //If the user did not provide an output file
-                huff->encode(inputFile, NULL);
-            else                        //Else the user provided an output file
-                huff->encode(inputFile, outputFile);
-        }   //End of the if the user provided a filename
-        else                            //Else the user did not provide an input file
-            std::cout << "Error! No file provided" << std::endl;    //Output error, no file path provided
+    if (cmd == "-e")                //Encode
+    {
+        //Here we encode the file from the user, but first we check if the user provided an output file
+        if (checkOutFile)           //If the user did not provide an output file
+            huff->EncodeFile(inputFile, NULL);
+        else                        //Else the user provided an output file
+            huff->EncodeFile(inputFile, outputFile);
     }   //End of Encode cmd
 
     else if (cmd == "-d")               //Decode
     {
         //We are required to have two file paths
-        if (checkInputFile && checkOutFile) //If the user provided an input and output file
+        if (checkInputFile == true && checkOutFile == true) //If the user provided an input and output file
         {
+            huff->DecodeFile(inputFile, outputFile);    //Call the decode method from the huff obj
+        }
+        else                                //Else the user did not provide one of the files
+            std::cout << "Error! Please provide input and output file" << std::endl;    //Output error
+    }
+    else if (cmd == "-t")   //Create a tree-building file
+    {
+        /* Required: input file,*/
+    }   //End of tree-building cmd
+
+    else if (cmd == "et")   //Encode with a specific tree-builder
+    {
+        /* Required files: input file, tree file
+         * Optional: output file
+         * */
+        std::string treeFile = outputFile;
+        bool checkTreeFile = checkOutFile;
+
+        if (checkTreeFile)  //Tree File is required
+        {
+            outputFile = getWord(inputFile, 5); //Optional output file
+            checkOutFile = checkWord(outputFile);
+            if (checkOutFile)
+            {
+
+            }
+
 
         }
-    }
+        else
+            std::cout << "Error! Please input tree file" << std::endl;
+
+    }   //End of Encoding w/ a tree-builder
+    else if (cmd == "-?" || cmd == "-help" || cmd == "-h")  //Else call display help
+        huff->DisplayHelp();
+    else    //Else not a valid cmd
+        std::cout << "Invalid command, check commands with: HUFF -?" << std::endl;
+
 }
 
 /*void interface2(std::string cmd, int ma)

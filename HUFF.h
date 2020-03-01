@@ -36,11 +36,10 @@ public:
     HUFF();
     ~HUFF();
 
-    void encode(std::string inputFile, std::string outputFile);
-    void decode(std::string inputFile, std::string outputFile);
-    void treeBuilder(std::string input);
-
-    void displayHelp();
+    void EncodeFile(std::string inputFile, std::string outputFile);
+    void DecodeFile(std::string inputFile, std::string outputFile);
+    void MakeTreeBuilder(std::string inputFile, std::string ouputFile);
+    void DisplayHelp();
 
 };
 

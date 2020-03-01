@@ -4,7 +4,7 @@
 #include "MinHeap.h"
 #include "HUFF.h"
 
-void interface      (std::string cmd, std::string input);    //Declaring the menu function
+void interface      (std::string cmd, std::string input, HUFF* huff);    //Declaring the menu function
 void toUpper        (std::string* word);                    //Declaring the toUpper function
 std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
 bool checkWord      (std::string word);                     //Declaring checkWord function
@@ -14,11 +14,11 @@ void readFile();
 const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 
 
-const HUFF * tree = new HUFF;
+
 
 int main()
 {
-
+    HUFF* huff = new HUFF;
     while (true)
     {
         std::string input;  //Create string to accept the input of the user
@@ -34,7 +34,7 @@ int main()
         {
             //std::string word = getWord (input, 2);//Get the second word of the input
             //Now we can call the menu and check the input
-            interface(cmd, input);
+            interface(cmd, input, huff);
         }
     }   //End of while-loop
 
@@ -43,21 +43,39 @@ int main()
 }
 
 
-void interface(std::string cmd, std::string input)
+void interface(std::string cmd, std::string input, HUFF* huff)
 {
 
-    if (cmd == "-e")    //Encode
+    std::string inputFile = getWord(input, 2);  //Get the word after the cmd, aka inputFile
+    std::string outputFile =  getWord(input, 3);//Get the 2nd word after the cmd, outputFile
+    bool checkInputFile = checkWord(inputFile); //True if user gave us a input file
+    bool checkOutFile = checkWord(outputFile);  //True if the user gave us an output file
+
+
+    if (cmd == "-e")                    //Encode
     {
         //The user is required the filename, and optional 2nd file
-        std::string originalFile = getWord(input, 2);   //Get the word after the cmd
-        if (originalFile == "error")    //If there was no filename after the cmd
-            return;                     //Exit of the interface
-        else                            //Else they provided a filename
+
+        if (checkInputFile)    //If there was no filename after the cmd
         {
-            //Check if the user input a output file
-            std::string outputFile = getWord(input, 3); //It would be the 3rd word in the
-        }
+            //Here we encode the file from the user, but first we check if the user provided an output file
+            if (checkOutFile)           //If the user did not provide an output file
+                huff->encode(inputFile, NULL);
+            else                        //Else the user provided an output file
+                huff->encode(inputFile, outputFile);
+        }   //End of the if the user provided a filename
+        else                            //Else the user did not provide an input file
+            std::cout << "Error! No file provided" << std::endl;    //Output error, no file path provided
     }   //End of Encode cmd
+
+    else if (cmd == "-d")               //Decode
+    {
+        //We are required to have two file paths
+        if (checkInputFile && checkOutFile) //If the user provided an input and output file
+        {
+
+        }
+    }
 }
 
 /*void interface2(std::string cmd, int ma)

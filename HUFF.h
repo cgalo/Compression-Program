@@ -45,6 +45,7 @@ public:
     void EncodeFile(std::string inputFile, std::string outputFile);
     void DecodeFile(std::string inputFile, std::string outputFile);
     void MakeTreeBuilder(std::string inputFile, std::string ouputFile);
+    void EncodeFileWithTree(std::string inputFile, std::string TreeFile, std::string outputFile);
     void DisplayHelp();
 
 

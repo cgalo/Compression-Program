@@ -10,7 +10,7 @@ std::string getWord (std::string line, int wordIndex);      //Declaring getWord 
 bool checkWord      (std::string word);                     //Declaring checkWord function
 void readFile();
 
-const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/Hamlet.txt";
+const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/Hamlet.txt";
 
 
 
@@ -57,75 +57,102 @@ int main()
 void interface(std::string cmd, std::string input, HUFF* huff)
 {
 
-    std::string inputFile = getWord(input, 3);  //Get the word after the cmd, aka inputFile
-    std::string outputFile =  getWord(input, 4);//Get the 3rd word after the cmd, outputFile
-    bool checkInputFile = checkWord(inputFile); //True if user gave us a input file
-    bool checkOutFile = checkWord(outputFile);  //True if the user gave us an output file
+    std::string inputFile = getWord(input, 3);    //Get the word after the cmd, aka inputFile
+    std::string outputFile =  getWord(input, 4);  //Get the 3rd word after the cmd, outputFile
+    bool checkInputFile = checkWord(inputFile);             //True if user gave us a input file
+    bool checkOutFile = checkWord(outputFile);              //True if the user gave us an output file
 
-    if (!checkInputFile)
+    if (cmd == "-e")                    //Encode
     {
-        //If the user did not provide an input file, output error
-        std::cout << "Error! Please enter an input file" << std::endl;
-        return; //Exit interface function
-    }
+        /* Objective: Encode input file, placing the output into output file
+         * Required: input file
+         * Optional: output file
+         * */
 
-    if (cmd == "-e")                //Encode
-    {
-        //Here we encode the file from the user, but first we check if the user provided an output file
-        if (checkOutFile)           //If the user did not provide an output file
-            huff->EncodeFile(filePath, NULL);
-        else                        //Else the user provided an output file
-            huff->EncodeFile(filePath, outputFile);
-    }   //End of Encode cmd
+        if (checkInputFile)             //If the user provided  an input file
+        {
+            //Here we encode the file from the user, but first we check if the user provided an output file
+            if (checkOutFile)           //If the user provided an output file
+                huff->EncodeFile(filePath, outputFile);
+            else                        //Else the user did not provide an output file
+                huff->EncodeFile(filePath, NULL);
+        }   //End of if the user provided an input file
+        else                        //Else user did not provide an input file
+            std::cout << "Error! Please enter an input file with this cmd" << std::endl;    //Output error
+    }   //End of Encode File, cmd -e
 
     else if (cmd == "-d")               //Decode
     {
-        std::cout << "d" << std::endl;
-        //We are required to have two file paths
-        if (checkInputFile == true && checkOutFile == true) //If the user provided an input and output file
-        {
-            huff->DecodeFile(inputFile, outputFile);    //Call the decode method from the huff obj
-        }
-        else                                //Else the user did not provide one of the files
-            std::cout << "Error! Please provide input and output file" << std::endl;    //Output error
-    }
-    else if (cmd == "-t")   //Create a tree-building file
-    {
-        std::cout << "t" << std::endl;
-        /* Required: input file,*/
-    }   //End of tree-building cmd
+        /* Objective: Decode input file into output file
+         * Required: input file, output file
+         * Optional: None
+         * */
 
-    else if (cmd == "et")   //Encode with a specific tree-builder
+        if (checkInputFile)             //If the user provided an input file
+        {
+            //We are required to have two file paths
+            if (checkInputFile == true && checkOutFile == true) //If the user provided an input and output file
+                huff->DecodeFile(inputFile, outputFile);        //Call the decode method from the huff obj
+            else                                                //Else the user did not provide one of the files
+                std::cout << "Error! Please provide an output file" << std::endl;    //Output error
+        }   //End of if the user did provide input file
+        else                            //Else the user didn't provide an input file
+            std::cout << "Error! Please provide input file with the cmd" <<  std::endl; //Output error
+    }   //End of Decode File, cmd -d
+
+    else if (cmd == "-t")               //Create a tree-building file
     {
-        /* Required files: input file, tree file
+        /* Objective: Read input file, produce a tree-builder file as output file
+         * Required: input file
+         * Optional: output file
+         * */
+
+        if (checkInputFile)             //If the user provided an input file
+        {
+            if (checkOutFile)           //If the user provided the optional output file
+                huff->MakeTreeBuilder(inputFile, outputFile);
+            else                        //Else the user did not provide the optional output file
+                huff->MakeTreeBuilder(inputFile, NULL);
+        }   //End of if the user provided an input file
+        else                            //Else the user didn't provide an input file
+            std::cout << "Error! Please provide input file with the cmd" <<  std::endl; //Output error
+
+    }   //End of create a tree-building file, cmd -t
+
+    else if (cmd == "-et")              //Encode with a specific tree-builder
+    {
+        /* Objective: Read input file, encode with tree-building file, and produce output file
+         * Required: input file, tree-building file
          * Optional: output file
          * */
 
         std::string treeFile = outputFile;
         bool checkTreeFile = checkOutFile;
 
-        if (checkTreeFile)  //Tree File is required
+        if (checkInputFile)             //Check that the user provided an input file
         {
-            std::cout << "et" << std::endl;
-            outputFile = getWord(inputFile, 5); //Optional output file
-            checkOutFile = checkWord(outputFile);
-            if (checkOutFile)
+            if (checkTreeFile)          //Check that the user provided a tree file
             {
-
-            }
-
-
-        }
-        else
-            std::cout << "Error! Please input tree file" << std::endl;
-
+                outputFile = getWord(inputFile, 5); //Get the optional output file from the input
+                checkOutFile = checkWord(outputFile);       //Check if the user input the output file
+                if (checkOutFile)                           //If the user did provide the optional output file
+                    huff->EncodeFileWithTree(inputFile, treeFile, outputFile);
+                else                                        //Else the user did not provide the output file
+                    huff->EncodeFileWithTree(inputFile, treeFile, NULL);
+            }   //End of if the the user provided the tree file
+            else
+                std::cout << "Error! Please enter a tree-builder file" << std::endl;    //Output error
+        }   //End of if the user provided an input file
+        else                        //Else user did not provide an input file
+            std::cout << "Error! Please enter an input file with this cmd" << std::endl;//Output error
     }   //End of Encoding w/ a tree-builder
-    else if (cmd == "-?" || cmd == "-help" || cmd == "-h")  //Else call display help
-        huff->DisplayHelp();
-    else    //Else not a valid cmd
-        std::cout << "Invalid command, check commands with: HUFF -?" << std::endl;
 
-}
+    else if (cmd == "-?" || cmd == "-help" || cmd == "-h")  //Else call display help
+        huff->DisplayHelp();                                //Display help
+
+    else                                //Else not a valid cmd
+        std::cout << "Invalid command, check commands with: HUFF -?" << std::endl;  //Output error
+}   //End of interface function
 
 /*void interface2(std::string cmd, int ma)
 {
@@ -282,6 +309,14 @@ bool checkWord (std::string word)
 }   //End of checkWord function
 
 
+/*
+//std::cout << "et" << std::endl;
+outputFile = getWord(inputFile, 5); //Optional output file
+checkOutFile = checkWord(outputFile);
+if (checkOutFile)
+{
+
+}*/
 
 
 /*

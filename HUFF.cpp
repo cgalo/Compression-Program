@@ -6,7 +6,6 @@
 #include <fstream> //To read and write files
 HUFF::HUFF()
 {
-    root = NULL;
     fileSize = 0;
     freqTable = new sortedLL;
 };
@@ -16,93 +15,57 @@ HUFF::~HUFF()
     /*Destructor for HUFF class, as C++ does not have a garbage collection*/
     delete freqTable;
 }
-void HUFF::buildFreqTable(std::string inputFile)
+void HUFF::buildFreqTable(std::string &inputFile)
 {
     /* Objective: Open and read the input file and save it into sortedLL object as a frequency table
      * Cases:
      *  1. File does not open then output error message
-     *  2. File opens and we read char by char and insert it into the freqTable
+     *  2. File opens and we read unsigned char by unsigned char and insert it into the freqTable
      *  */
     std::ifstream file (inputFile, std::ios::in | std::ios::binary);    //Read the file as binary
     if (!file)      //If file is not found or unable to open
         std::cout << "Error! File not found" << std::endl;  //Throw error
     else            //Else we could find and open the file
     {
-        //Get the file size
-        file.seekg(0, std::ios::beg);
-        int start = file.tellg();
-        file.seekg(0, std::ios::end);
-        int stop  = file.tellg();
-        file.seekg(0, std::ios::beg);
-        fileSize = stop - start;
-        //Finish calculating file size
-        std::cout << "File Size: " << std::endl;
-        char tempChar;   //Create variable to read char by char of the file
+        unsigned char tempChar;   //Create variable to read unsigned char by unsigned char of the file
 
-        while (file >> std::noskipws >> tempChar)    //Loop through each character in the file
-            freqTable->insert(tempChar);             //Save the current char in the freqTable
+        while (file >> std::noskipws >> tempChar)    //Loop through each unsigned character in the file
+        {
+            frequencies[tempChar]++;
+            freqTable->insert(tempChar);             //Save the current unsigned char in the freqTable
+        }
 
         file.close();   //Close the file
-        freqTable->printLL();
-        std::cout << "Length: " << freqTable->getLength() << std::endl;
     }   //End of else, if we could find and open the file
 }   //End of buildFreqTable method
 
-void HUFF::EncodeFile(std::string inputFile, std::string outputFile)
+void HUFF::EncodeFile(std::string &inputFile, std::string &outputFile)
 {
+    std::cout << "In here" << std::endl;
     std::cout << "InputFile: " << inputFile << std::endl;
     buildFreqTable(inputFile);  //Build the frequency table from the file
     if (!freqTable->isEmpty())  //If there were no issues reading the file
     {
-        //Build the huffman tree
-        buildHuffTree();
+        MinHeap* huffTree = new MinHeap;
+        huffTree->buildHuff(frequencies);
+        huffTree->getCodes();
     }   //End of if the freqTable was build
     else                        //Else there was an error opening/reading the file
         return;                 //Exit the method
 }   //End of EncodeFile method
 
-void HUFF::buildHuffTree()
-{
-    //Loop until freqTable is empty
-    while (!freqTable->isEmpty())
-    {
-        //Create a left node that will be the min of the freqTable
-        Node* leftChild = new Node(freqTable->getMinData());
-        leftChild->weight = freqTable->getMinCount();
-        freqTable->deleteMin();
-
-        //Create a right node that will be the min of the freqTable
-        Node* rightChild = new Node(freqTable->getMinData());
-        rightChild = new Node(freqTable->getMinData());
-        freqTable->deleteMin();
-
-        //Create a parent node, will not have data, but will have weight combined of its children
-        Node* parentNode = new Node(leftChild->weight + rightChild->weight);
-
-        //Connect the parent node to the children, and the children to the parent node
-        parentNode->LCH = leftChild;
-        leftChild->parent = parentNode;
-        parentNode->RCH = rightChild;
-        rightChild->parent = parentNode;
-
-        std::cout << "Left: " << leftChild->data << std::endl;
-        std::cout << "Right: " << rightChild->data << std::endl;
-        break;
-    }   //End of while-loop
-}   //End of buildHuffTree method
-
-void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
+void HUFF::DecodeFile(std::string &inputFile, std::string &outputFile)
 {
     /* Objective: Decode Huffman-encoded file1 into file2.
      * */
 }
 
-void HUFF::MakeTreeBuilder(std::string inputFile, std::string ouputFile)
+void HUFF::MakeTreeBuilder(std::string &inputFile, std::string &outputFile)
 {
 
 }
 
-void HUFF::EncodeFileWithTree(std::string inputFile, std::string TreeFile, std::string outputFile)
+void HUFF::EncodeFileWithTree(std::string &inputFile, std::string &TreeFile, std::string &outputFile)
 {
 
 }

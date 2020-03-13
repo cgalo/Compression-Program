@@ -34,14 +34,14 @@ sortedLL::Node* sortedLL::search(unsigned char c)
 {
     Node* currentNode = head;   //Start from the head of the LL
 
-    while (currentNode != NULL) //Traverse through the LL to find Node w/ given char
+    while (currentNode != NULL) //Traverse through the LL to find Node w/ given unsigned char
     {
-        if (currentNode->data == c) //If the current node has the char
+        if (currentNode->data == c) //If the current node has the unsigned char
             return currentNode;     //Return the node
-        else                        //Else the current node doesn't have the char
+        else                        //Else the current node doesn't have the unsigned char
             currentNode = currentNode->next;    //Move to the next node in the LL
     }   //End of while-loop
-    //We are here if we never found a node with the char
+    //We are here if we never found a node with the unsigned char
     return NULL;    //Return NULL
 }   //End of sorted method
 
@@ -54,14 +54,14 @@ void sortedLL::insert(unsigned char c)
     }   //End of if the LL is empty
     else            //Else the tree is not empty
     {
-        Node* searchNode = search(c);   //Search for node with given char
-        if (searchNode != NULL)         //If the search found a node w/ the char
+        Node* searchNode = search(c);   //Search for node with given unsigned char
+        if (searchNode != NULL)         //If the search found a node w/ the unsigned char
         {
             searchNode->count++;        //Increase the count/frequency of the node
 
             sortLL();                   //Call the sort method
         }   //End of if the search found a node
-        else                            //Else there was  no node w/ the char
+        else                            //Else there was  no node w/ the unsigned char
         {
             Node* newHead = new Node(c);//Create a new node to insert as new head
             newHead->next = head;       //Connect the newHead to the current head of the LL

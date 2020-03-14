@@ -39,7 +39,7 @@ void HUFF::buildFreqTable(std::string &inputFile)
     }   //End of else, if we could find and open the file
 }   //End of buildFreqTable method
 
-void HUFF::EncodeFile(std::string &inputFile, std::string &outputFile)
+void HUFF::EncodeFile(std::string inputFile, std::string outputFile)
 {
     std::cout << "In here" << std::endl;
     std::cout << "InputFile: " << inputFile << std::endl;
@@ -54,18 +54,18 @@ void HUFF::EncodeFile(std::string &inputFile, std::string &outputFile)
         return;                 //Exit the method
 }   //End of EncodeFile method
 
-void HUFF::DecodeFile(std::string &inputFile, std::string &outputFile)
+void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
 {
     /* Objective: Decode Huffman-encoded file1 into file2.
      * */
 }
 
-void HUFF::MakeTreeBuilder(std::string &inputFile, std::string &outputFile)
+void HUFF::MakeTreeBuilder(std::string inputFile, std::string outputFile)
 {
 
 }
 
-void HUFF::EncodeFileWithTree(std::string &inputFile, std::string &TreeFile, std::string &outputFile)
+void HUFF::EncodeFileWithTree(std::string inputFile, std::string TreeFile, std::string outputFile)
 {
 
 }

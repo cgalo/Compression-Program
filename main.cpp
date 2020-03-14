@@ -6,7 +6,7 @@ void interface      (std::string &cmd, std::string &input, HUFF* huff);    //Dec
 std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
 bool checkWord      (std::string &word);                     //Declaring checkWord function
 
-const char filePath [] = "/Users/cgalo/CLionProjects/HUFF/DSC_0113.NEF.jpg";
+const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/DSC_0113.NEF.jpg";
 
 
 int main()
@@ -65,7 +65,7 @@ void interface(std::string&cmd, std::string &input, HUFF* huff)
             if (checkOutFile)           //If the user provided an output file
                 huff->EncodeFile(filePath, outputFile);
             else                        //Else the user did not provide an output file
-                huff->EncodeFile(filePath, "NULL");
+                huff->EncodeFile(filePath, "");
         }   //End of if the user provided an input file
         else                        //Else user did not provide an input file
             std::cout << "Error! Please enter an input file with this cmd" << std::endl;    //Output error

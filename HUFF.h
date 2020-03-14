@@ -24,10 +24,10 @@ public:
 
 
     //Five different modes, these are called from the main.cpp
-    void EncodeFile(std::string &inputFile, std::string &outputFile);
-    void DecodeFile(std::string &inputFile, std::string &outputFile);
-    void MakeTreeBuilder(std::string &inputFile, std::string &outputFile);
-    void EncodeFileWithTree(std::string &inputFile, std::string &TreeFile, std::string &outputFile);
+    void EncodeFile(std::string inputFile, std::string outputFile);
+    void DecodeFile(std::string inputFile, std::string outputFile);
+    void MakeTreeBuilder(std::string inputFile, std::string outputFile);
+    void EncodeFileWithTree(std::string inputFile, std::string TreeFile, std::string outputFile);
     void DisplayHelp();     //Outputs cmd options with description
 
 

@@ -1,7 +1,10 @@
-#include "MinHeap.h"
-//
-// Created by Carlos Galo on 2/26/20.
-//
+/*
+ * Author: Carlos Galo
+ * File: MinHeap.cpp
+ * Last Edited: 03/14/2020
+ * Notes:
+ *  -This is the source file for the MinHeap class
+ * */
 
 #include "MinHeap.h"
 
@@ -92,6 +95,8 @@ void MinHeap::printArr(int *arr, int length)
         std::cout << arr[i];
 }
 
+/*
+
 void MinHeap::printCodes(MinHeap::Node *node, int *codes, int length)
 {
     if (node->LCH)
@@ -106,29 +111,75 @@ void MinHeap::printCodes(MinHeap::Node *node, int *codes, int length)
     }
     if (!node->LCH && !node->RCH)
     {
-        std::cout << node->data << ": ";
+        std::cout << node->data << ": " ;
         printArr(codes, length);
         std::cout << std::endl;
     }
 }
 
+*/
+
+void MinHeap::myPrintCodes(MinHeap::Node *node, int *codes, int length)
+{
+    if (node->LCH)
+    {
+        codes[length] = 0;
+        myPrintCodes(node->LCH, codes, length + 1);
+    }
+    if (node->RCH)
+    {
+        codes[length] = 1;
+        myPrintCodes(node->RCH, codes, length + 1) ;
+    }
+    if (!node->LCH && !node->RCH)
+    {
+        std::cout << node->data << ": " ;
+        //printArr(codes, length);
+        std::cout << std::endl;
+    }
+}
+
+
+
+void MinHeap::printCodes(MinHeap::Node *node, std::string &code, std::string *codeBook)
+{
+    if (node->LCH)      //If the node has a left child
+    {
+        code += "0";    //Add 0 to the current code
+        printCodes(node->LCH, code, codeBook);  //Recurse starting from the left child of the node
+        code.erase(code.end()-1);
+    }
+    if (node->RCH)      //If the node has a right child
+    {
+        code += "1";    //Add 1 to the current code
+        printCodes(node->RCH, code, codeBook);  //Recurse starting from the left child of the node
+        code.erase(code.end()-1);
+    }
+    if (!node->LCH && !node->RCH)   //If we reached a leaf
+    {
+        //std::cout << node->data << ": " << code << std::endl;
+        codeBook[node->data] = code;    //Add the current code to the codebook array
+        //code.clear();                   //Clear the values in the code string
+    }   //End of if we reached a leaf
+
+}   //End of printCodes
+
 
 void MinHeap::buildHuff(unsigned int *table)
 {
-    std::cout << "Size: " << size << std::endl;
     for (int i = 0; i < maxSize; i++)   //Loop through the table to insert populated values
     {
         if (table[i])                   //If there is a value in this index
         {
-
-            array[size] = new Node((char) i, table[i]);   //Insert new node into the heap array
+            frequencies[i] = table[i];  //Copy the values of the given table to the frequency table in the minHeap
+            array[size] = new Node((unsigned char) i, table[i]);   //Insert new node into the heap array
             size++;                     //Update the size of the heap
-        }
+        }   //End of if there is a value in the current
     }   //End of for-loop, finished pushing all the data into the heap
 
     //BuildMinHeap
     int n = size - 1;   //Get the last node index in the heap
-    for (int index  = (n - 1) / 2; index >= 0; index--)
+    for (int index = (n - 1) / 2; index >= 0; index--)
         heapify(index);
     for (int i = 0; i < size; i++)
         std::cout << array[i]->data << ": " << array[i]->weight << std::endl;
@@ -142,10 +193,10 @@ void MinHeap::buildHuff(unsigned int *table)
 
         //Create a parent node that has no data, but the added weight of left and right children
         Node* parent = new Node(leftChild->weight + rightChild->weight);
-        parent->LCH = leftChild;     //Set the left node as the parent's LCH
-        parent->RCH = rightChild;    //Set the right node as the parent's RCH
+        parent->LCH = leftChild;    //Set the left node as the parent's LCH
+        parent->RCH = rightChild;   //Set the right node as the parent's RCH
 
-        insert(parent);         //Insert the parent node into the heap
+        insert(parent);             //Insert the parent node into the heap
 
         std::cout << "Left: " << leftChild->data << ", " << leftChild->weight<< std::endl;
         std::cout << "Right: " << rightChild->data << ", " << rightChild->weight << std::endl;
@@ -155,9 +206,10 @@ void MinHeap::buildHuff(unsigned int *table)
     std::cout << "Root: " << HUFFRoot->data << ", " << HUFFRoot->weight << std::endl;
 }   //End of constructHeap method
 
-
-void MinHeap::getCodes()
+std::string * MinHeap::getCodes()
 {
-    int arr[maxSize], top = 0;
-    printCodes(HUFFRoot, arr, top);
+    std::string codeBook[maxSize], currentCode; //Create an array of strings
+    printCodes(HUFFRoot, currentCode, codeBook);
+
+    return codeBook;    //Return the filled code book
 }

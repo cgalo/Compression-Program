@@ -6,7 +6,7 @@ void interface      (std::string &cmd, std::string &input, HUFF* huff);    //Dec
 std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
 bool checkWord      (std::string &word);                     //Declaring checkWord function
 
-const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/DSC_0113.NEF.jpg";
+const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/Hamlet copy.txt";
 
 
 int main()
@@ -47,10 +47,10 @@ int main()
 void interface(std::string&cmd, std::string &input, HUFF* huff)
 {
 
-    std::string inputFile = getWord(input, 3);   //Get the word after the cmd, aka inputFile
-    std::string outputFile =  getWord(input, 4); //Get the 3rd word after the cmd, outputFile
-    bool checkInputFile = checkWord(inputFile); //True if user gave us a input file
-    bool checkOutFile = checkWord(outputFile);  //True if the user gave us an output file
+    std::string inputFile   = getWord(input, 3);   //Get the word after the cmd, aka inputFile
+    std::string outputFile  = getWord(input, 4); //Get the 3rd word after the cmd, outputFile
+    bool checkInputFile     = checkWord(inputFile); //True if user gave us a input file
+    bool checkOutFile       = checkWord(outputFile);  //True if the user gave us an output file
 
     if (cmd == "-e")                    //Encode
     {
@@ -102,7 +102,7 @@ void interface(std::string&cmd, std::string &input, HUFF* huff)
             if (checkOutFile)           //If the user provided the optional output file
                 huff->MakeTreeBuilder(inputFile, outputFile);
             else                        //Else the user did not provide the optional output file
-                huff->MakeTreeBuilder(inputFile, nullptr);
+                huff->MakeTreeBuilder(inputFile, "");
         }   //End of if the user provided an input file
         else                            //Else the user didn't provide an input file
             std::cout << "Error! Please provide input file with the cmd" <<  std::endl; //Output error
@@ -128,7 +128,7 @@ void interface(std::string&cmd, std::string &input, HUFF* huff)
                 if (checkOutFile)                           //If the user did provide the optional output file
                     huff->EncodeFileWithTree(inputFile, treeFile, outputFile);
                 else                                        //Else the user did not provide the output file
-                    huff->EncodeFileWithTree(inputFile, treeFile, nullptr);
+                    huff->EncodeFileWithTree(inputFile, treeFile, "");
             }   //End of if the the user provided the tree file
             else
                 std::cout << "Error! Please enter a tree-builder file" << std::endl;    //Output error
@@ -181,8 +181,8 @@ std::string getWord (std::string line, int wordIndex)
 
 bool checkWord (std::string &word)
 {
-    /*
-     * checkWord function is called every time a user enters a cmd
+    /* CheckWord function, parameter(s): string reference
+     * Function is called every time a user enters a cmd
      * Objective: check if the user entered two strings in the input
      * Cases:
      *  -If string is "wordIndex error" then the user only entered one word
@@ -192,17 +192,3 @@ bool checkWord (std::string &word)
     return  (word == "error") ?  false : true;
 
 }   //End of checkWord function
-
-/*
-    MinHeap* min = new MinHeap;
-    min->insertKey(3);
-    min->insertKey(2);
-    min->insertKey(1);
-    min->insertKey(15);
-    min->insertKey(5);
-    min->insertKey(4);
-    min->insertKey(45);
-    min->print();
-    readFile();
-
-    */

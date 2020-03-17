@@ -12,11 +12,11 @@
 class HUFF {
 private:
 
-    sortedLL* freqTable;
     unsigned int frequencies[maxSize] = {0};
     int fileSize;
 
-    void buildFreqTable(std::string &inputFile); //Opens and reads file char by char and inserts it into freqTable
+    bool buildFreqTable(std::string &inputFile); //Opens and reads file char by char and inserts it into freqTable
+    void writeFile(std::string filename);
     //MinHeap* buildHuffTree();
 public:
     HUFF();     //Constructor

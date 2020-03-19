@@ -103,20 +103,17 @@ unsigned char HUFF::StringToByte(std::string str)
     return returnChar;
 }
 
-void HUFF::writeEncodeFile(std::string &outputFile, std::string *codeBook, std::string &finalConfig)
+void HUFF::writeEncodedFile(std::string &outputFile, std::string *codeBook, std::string &finalConfig)
 {
-    /*
-     *
-     *
-     *
-     *
-     *
-     *
-     *
+    /* writeEncodedFile private method, parameter(s): string output file, string array codeBook, string finalConfig
+     * Objective: Insert frequency table, and finalConfig into a new file (output file).
      * */
+
     std::ofstream outFile (outputFile, std::ios::out | std::ios::binary);  //Write to the file in binary
-    if (!outFile)       //If there is an issue creating the output file
+
+    if (!outFile)       //If there is an issue creating/opening the output file
         std::cout << "Error creating new Encoding file" << std::endl;   //Output error
+
     else                //Else there was no issue creating/opening the output file
     {
         int totInsert = 0;                  //Keep track of total inserted pairs into the file
@@ -139,7 +136,11 @@ void HUFF::writeEncodeFile(std::string &outputFile, std::string *codeBook, std::
                 outFile.put((unsigned int) 0);    //Inserts unsigned char 0 through out as padding
         }   //End of the if the file was not filled with the 510 bytes
 
-        //We get here after inserting the frequency table into the file, occupying 510 bytes
+        //We get here after inserting the frequency table into the file, occupying the first 510 bytes
+        //Now append the finalConfig into the
+
+
+
     }   //End of else, if there was no issue creating the output file
     /*
     int numberOfBytes = finalConfig.length()/8; //Need to check for rounding
@@ -185,7 +186,7 @@ void HUFF::EncodeFile(std::string inputFile, std::string outputFile)
         if (finalConfig.empty())    //If the string is empty then we had an issue opening the file
             return;                 //We have already output error message so we just exit the method
         else                        //Else the string is not empty, we have the finalConfig to write it to new file
-            writeEncodeFile(outputFile, codeBook, finalConfig); //Write to the file
+            writeEncodedFile(outputFile, codeBook, finalConfig); //Write to the file
 
         //We are done with this cmd/method now just perform GC on our objects
         delete huffTree;    //Garbage collection on the MinHeap object

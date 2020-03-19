@@ -17,7 +17,7 @@ private:
 
     bool buildFreqTable(std::string &inputFile); //Opens and reads file char by char and inserts it into freqTable
     std::string getFinalConfig(std::string &inputFile, std::string* codeBook);
-    void writeEncodeFile(std::string &outputFile, std::string *codeBook, std::string& finalConfig);
+    void writeEncodedFile(std::string &outputFile, std::string *codeBook, std::string& finalConfig);
     void writeTreeBuilderFile(std::string &outputFile, std::string* codeBook, std::string& finalConfig);
 
     unsigned int getFileSize(std::ifstream &file);

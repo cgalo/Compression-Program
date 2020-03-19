@@ -1,18 +1,22 @@
+/*
+ * Author: Carlos Galo
+ * Created: 2/29/2020
+ * Class: EECS 2510 -> Non-Linear Data Structures
+ * File: main.cpp: Main menu for the huffman compression program
+ * Objective: Encode and decode any file using huffman greedy algorithm
+ * */
+
 #include <iostream>
-#include "MinHeap.h"
-#include "HUFF.h"
+#include "HUFF.h"   //Call the HUFF header file
 
-void interface      (std::string &cmd, std::string &input, HUFF* huff);    //Declaring the menu function
-std::string getWord (std::string line, int wordIndex);      //Declaring getWord function
-bool checkWord      (std::string &word);                     //Declaring checkWord function
-
-const char filePath [] = "/Users/cgalo/CLionProjects/Compression-Program/Hamlet copy.txt";
-
+void interface      (std::string &cmd, std::string &input, HUFF* huff); //Declaring the menu function
+std::string getWord (std::string line, int wordIndex);                  //Declaring getWord function
+bool checkWord      (std::string &word);                                //Declaring checkWord function
 
 int main()
 {
     HUFF * huff = new HUFF; //Initiate the huff object
-    while (true)
+    while (true)            //While-loop until user enters the exit/end command
     {
         std::string input;  //Create string to accept the input of the user
         std::cout<< "";
@@ -22,7 +26,6 @@ int main()
         if (strHuff == "HUFF")                                 //If the first word is "HUFF"
         {
             std::string cmd = getWord(input, 2);    //Get the cmd from the user
-
             if (cmd == "-exit" || cmd == "-end")                //If the command entered was 'EXIT'
             {
                 delete huff;                                    //Perform garbage-collection to the HUFF object
@@ -63,9 +66,9 @@ void interface(std::string&cmd, std::string &input, HUFF* huff)
         {
             //Here we encode the file from the user, but first we check if the user provided an output file
             if (checkOutFile)           //If the user provided an output file
-                huff->EncodeFile(filePath, outputFile);
-            else                        //Else the user did not provide an output file
-                huff->EncodeFile(filePath, "");
+                huff->EncodeFile(inputFile, outputFile);
+            else                        //Else the user did not provide an output file, pass it as an empty string
+                huff->EncodeFile(inputFile, "");
         }   //End of if the user provided an input file
         else                        //Else user did not provide an input file
             std::cout << "Error! Please enter an input file with this cmd" << std::endl;    //Output error
@@ -95,12 +98,19 @@ void interface(std::string&cmd, std::string &input, HUFF* huff)
         /* Objective: Read input file, produce a tree-builder file as output file
          * Required: input file
          * Optional: output file
+         * Note: Both file names must not refer to the same file
          * */
 
         if (checkInputFile)             //If the user provided an input file
         {
             if (checkOutFile)           //If the user provided the optional output file
-                huff->MakeTreeBuilder(inputFile, outputFile);
+            {
+                if (inputFile == outputFile)    //If the user provided the same input as output file
+                    std:: cout << "Error! Please make sure your input file and output file are not the same" << std::endl;
+                else
+                    huff->MakeTreeBuilder(inputFile, outputFile);
+            }   //End of if the user provided the optional output file
+
             else                        //Else the user did not provide the optional output file
                 huff->MakeTreeBuilder(inputFile, "");
         }   //End of if the user provided an input file

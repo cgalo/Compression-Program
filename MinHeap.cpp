@@ -1,9 +1,10 @@
 /*
  * Author: Carlos Galo
  * File: MinHeap.cpp
- * Last Edited: 03/14/2020
+ * Created: 03/10/2020
  * Notes:
  *  -This is the source file for the MinHeap class
+ *  -Gets called only from the HUFF class
  * */
 
 #include "MinHeap.h"
@@ -26,7 +27,10 @@ MinHeap::~MinHeap()
 
 void MinHeap::swap(MinHeap::Node **left, MinHeap::Node **right)
 {
-    /*Objective: Swap node left with node right without moving their data in the array*/
+    /* Swap private method, parameter(s): struct Node, struct Node
+     * Objective: Swap node left with node right without moving their data in the array
+     * */
+
     Node* oldLeft = *left;  //Remember the left node before any swap
     *left = *right;         //Insert the right node where left is
     *right = oldLeft;       //Insert the oldLeft into the right node
@@ -34,6 +38,10 @@ void MinHeap::swap(MinHeap::Node **left, MinHeap::Node **right)
 
 void MinHeap::insert(MinHeap::Node *insertNode)
 {
+    /* Insert private method, parameter(s): struct Node
+     * Objective: Insert the given node into the heap while not breaking the heap rules
+     * */
+
     size++;                 //Update the current size of the heap
     int index = size - 1;   //Get the index of the last node in the array before updating count
     while (index && insertNode->weight < array[(index - 1) / 2]->weight)
@@ -44,19 +52,12 @@ void MinHeap::insert(MinHeap::Node *insertNode)
     array[index] = insertNode;  //Insert the node into the array
 }   //End of insert method
 
-void MinHeap::push(unsigned char data, int weight)
-{
-    if (size >= maxSize)        //If the size of the array has reached or passed the max capable size of the heap
-        std::cout << "Error! Overflow in the heap" << std::endl;    //Output error
-    else                        //Else the size is below the max size so we can insert a new node into the heap
-        insert(new Node (data, weight));    //Call the insertion method by passing the given parameters
-}   //End of push method
-
 void MinHeap::heapify(int index)
 {
     /* Heapify private method, parameter(s): int index
      * Objective: Rearrange the heap to maintain the heap property, keeping it from min to max depending on the
-     *  weight of the nodes. This is done through recursion.*/
+     *  weight of the nodes. This is done through recursion.
+     * */
 
     int newIndex = index;       //Remember the index before moving it
     int left = 2 * index+ 1;    //Get the left child of the index in the array
@@ -77,8 +78,15 @@ void MinHeap::heapify(int index)
 
 MinHeap::Node* MinHeap::popMin()
 {
-    if (size < 0)      //If the size of the heap is 0
-        return nullptr;    //Then return null
+    /* popMin private Node method, parameter(s): None
+     * Objective: Get & remove first node in the heap, make sure that the heap remains balance, and return the first node
+     * Cases:
+     *  1. The size is less then 0 then we return a nullptr
+     *  2. Get the first min in the heap, call the heapify method, and return the min node
+     * */
+
+    if (size < 0)       //If the size of the heap is 0
+        return nullptr; //Then return null
     else                //Else the size is not 0
     {
         Node* minNode = array[0];   //Get the first node in the heap
@@ -89,84 +97,40 @@ MinHeap::Node* MinHeap::popMin()
     }   //End of else
 }   //End of popMin method
 
-void MinHeap::printArr(int *arr, int length)
+void MinHeap::createCodes(MinHeap::Node *node, std::string &code, std::string *codeBook)
 {
-    for (int i = 0; i <  length; i++)
-        std::cout << arr[i];
-}
+    /* createCode private recursive method, parameter(s): Node, string code, string array codeBook
+     * Objective: Traverse through the tree to fill out the huffman code per character and add it to the codeBook
+     * Cases:
+     *  1. If the node has a left-child then we add 0 to the code string and move to the LCH node
+     *  2. If the node has a right-child then we add 1 to the code string and move to the RCH node
+     *  3. Reached a leaf node, we add the current string code to the codeBook, using the current node data as index
+     * */
 
-/*
-
-void MinHeap::printCodes(MinHeap::Node *node, int *codes, int length)
-{
-    if (node->LCH)
-    {
-        codes[length] = 0;
-        printCodes(node->LCH, codes, length + 1);
-    }
-    if (node->RCH)
-    {
-        codes[length] = 1;
-        printCodes(node->RCH, codes, length + 1) ;
-    }
-    if (!node->LCH && !node->RCH)
-    {
-        std::cout << node->data << ": " ;
-        printArr(codes, length);
-        std::cout << std::endl;
-    }
-}
-
-*/
-
-void MinHeap::myPrintCodes(MinHeap::Node *node, int *codes, int length)
-{
-    if (node->LCH)
-    {
-        codes[length] = 0;
-        myPrintCodes(node->LCH, codes, length + 1);
-    }
-    if (node->RCH)
-    {
-        codes[length] = 1;
-        myPrintCodes(node->RCH, codes, length + 1) ;
-    }
-    if (!node->LCH && !node->RCH)
-    {
-        std::cout << node->data << ": " ;
-        //printArr(codes, length);
-        std::cout << std::endl;
-    }
-}
-
-
-
-void MinHeap::printCodes(MinHeap::Node *node, std::string &code, std::string *codeBook)
-{
     if (node->LCH)      //If the node has a left child
     {
         code += "0";    //Add 0 to the current code
-        printCodes(node->LCH, code, codeBook);  //Recurse starting from the left child of the node
+        createCodes(node->LCH, code, codeBook);  //Recurse starting from the left child of the node
         code.erase(code.end()-1);
-    }
+    }   //End of if the node has a LCH
+
     if (node->RCH)      //If the node has a right child
     {
         code += "1";    //Add 1 to the current code
-        printCodes(node->RCH, code, codeBook);  //Recurse starting from the left child of the node
+        createCodes(node->RCH, code, codeBook);  //Recurse starting from the right child of the node
         code.erase(code.end()-1);
-    }
-    if (!node->LCH && !node->RCH)   //If we reached a leaf
-    {
-        //std::cout << node->data << ": " << code << std::endl;
-        codeBook[node->data] = code;    //Add the current code to the codebook array
-        //code.clear();                   //Clear the values in the code string
-    }   //End of if we reached a leaf
+    }   //End of if the node has a RCH
 
+    if (!node->LCH && !node->RCH)       //If we reached a leaf
+        codeBook[node->data] = code;    //Add the current code to the codeBook array
 }   //End of printCodes
-
 
 void MinHeap::buildHuff(unsigned int *table)
 {
+    /* buildHuff public method, parameter(s): unsigned int array
+     * Objective: build a huffman tree with the given frequency table
+     * */
+
     for (int i = 0; i < maxSize; i++)   //Loop through the table to insert populated values
     {
         if (table[i])                   //If there is a value in this index
@@ -181,8 +145,6 @@ void MinHeap::buildHuff(unsigned int *table)
     int n = size - 1;   //Get the last node index in the heap
     for (int index = (n - 1) / 2; index >= 0; index--)
         heapify(index);
-    for (int i = 0; i < size; i++)
-        std::cout << array[i]->data << ": " << array[i]->weight << std::endl;
 
     //We get here if we inserted everything from the table into the heap
     //Now we need to create the HuffTree
@@ -197,19 +159,17 @@ void MinHeap::buildHuff(unsigned int *table)
         parent->RCH = rightChild;   //Set the right node as the parent's RCH
 
         insert(parent);             //Insert the parent node into the heap
-
-        std::cout << "Left: " << leftChild->data << ", " << leftChild->weight<< std::endl;
-        std::cout << "Right: " << rightChild->data << ", " << rightChild->weight << std::endl;
-        std::cout << "Parent: " << parent->data << ", " << parent->weight << std::endl;
     }   //End of while-loop
     HUFFRoot = popMin();        //Get the last node of the heap and set it as root of the HUFF Tree
-    std::cout << "Root: " << HUFFRoot->data << ", " << HUFFRoot->weight << std::endl;
 }   //End of constructHeap method
 
 std::string * MinHeap::getCodes()
 {
-    std::string codeBook[maxSize], currentCode; //Create an array of strings
-    printCodes(HUFFRoot, currentCode, codeBook);
+    /* getCodes public method, parameter(s): None
+     * Objective: Build the huffman codes using the huffman tree, return array of strings containing the codes
+     * */
 
-    return codeBook;    //Return the filled code book
-}
+    std::string codeBook[maxSize], currentCode;         //Create an array of strings and an empty string
+    createCodes(HUFFRoot, currentCode, codeBook);   //Build the code book with the huffman tree
+    return codeBook;                                    //Return the filled code book
+}   //End of getCodes method

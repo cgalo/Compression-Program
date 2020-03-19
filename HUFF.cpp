@@ -202,7 +202,9 @@ void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
      * Objective: Decode Huffman-encoded file1 into file2.
      * */
 
-    std::ifstream file (inputFile, std::ios::in | std::ios::binary);
+    MinHeap* huffTree = new MinHeap();  //Initiate the  huffTree
+    std::ifstream file (inputFile, std::ios::in | std::ios::binary);    //Read the input file
+
     if (!file)
         std::cout << "Error opening/reading file in decode file method" << std::endl;
     else
@@ -219,27 +221,40 @@ void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
         {
             fileBytes[totalBytes] = tempVal;        //Insert  the tempVal
             totalBytes++;
-            //str = getReadingByteString(tempChar);
-            //std::cout << "String value: " << str << std::endl;
-        }
+        }   //End of for-loop, we got to the end of the file
         std::cout << "Total Bytes: "  << totalBytes << std::endl;
 
+        int index = 0;
         //First we need to get the first 510 bytes, which are pair values of characters and their frequency
-        for (int i = 0; i < 510; i += 2)    //Get the frequency table from the file, move pair by pair
+        for (index; index < 510; index += 2)    //Get the frequency table from the file, move pair by pair
         {
-            unsigned char symbol = fileBytes[i];
-            unsigned char syFreq = fileBytes[i+1];
+            unsigned char symbol = fileBytes[index];
+            unsigned char syFreq = fileBytes[index+1];
             if (!((symbol == (unsigned char)0) && (syFreq== (unsigned char)0))) //If it's not a padding byte pair
                 frequencies[symbol] = (unsigned int)syFreq;                     //Then insert it to the freq table
         }   //End of for-loop
+
         //Print the frequency table
         for (int i = 0; i < maxSize; i++)
         {
             if (frequencies[i])
                 std::cout << (char)i << ": " << frequencies[i] << std::endl;
         }
-        std::cout << "What is this: " << (unsigned char)0 << std::endl;
-    }
+
+        //Now that we have the frequency table, we can create the huffman tree with it
+        huffTree->buildHuff(frequencies);               //Build the tree with the frequency table
+        std::string* codeBook = huffTree->getCodes();   //Get the huffman codes of the frequency table
+        std::string finalConfig = getFinalConfig(inputFile, codeBook);  ////This might need to  change into a char array
+
+        //Now we need to loop from where the index left of until the end of the finalConfig
+        for (index; index < fileSize; index++)
+        {
+
+        }   //End of for-loop, looping the fileBytes array
+    }   //End of else, if there was no error opening/reading the input file
+    //We are done with this cmd/method now just perform GC on our objects
+    delete huffTree;    //Garbage collection on the MinHeap object
+    memset(frequencies, 0, sizeof(frequencies));    //Reset the frequency table
 }   //End of DecodeFile method
 
 void HUFF::MakeTreeBuilder(std::string inputFile, std::string outputFile)
@@ -326,6 +341,9 @@ void HUFF::writeTreeBuilderFile(std::string &outputFile, std::string *codeBook, 
 
 void HUFF::EncodeFileWithTree(std::string inputFile, std::string TreeFile, std::string outputFile)
 {
+    /* EncodeFileWithTree public method, parameter(s): string inputFile, string TreeFile, string outputFile
+     * Objective:
+     * */
 
 }
 

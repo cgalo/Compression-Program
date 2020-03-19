@@ -211,8 +211,7 @@ void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
 
         std::cout << "File Size: " << fileSize << std::endl;
         unsigned char fileBytes[fileSize];
-        //First we need to get the first 510 bytes, which are pair values of characters and their frequency
-        //std::string str;
+
         unsigned char tempVal;
         int totalBytes = 0;
         //Insert all the bytes from the file to the array
@@ -225,11 +224,13 @@ void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
         }
         std::cout << "Total Bytes: "  << totalBytes << std::endl;
 
-        for (int i = 0; i < 510; i += 2)    //Get the frequency table from the file
+        //First we need to get the first 510 bytes, which are pair values of characters and their frequency
+        for (int i = 0; i < 510; i += 2)    //Get the frequency table from the file, move pair by pair
         {
             unsigned char symbol = fileBytes[i];
             unsigned char syFreq = fileBytes[i+1];
-            frequencies[symbol] = (unsigned int)syFreq;
+            if (!((symbol == (unsigned char)0) && (syFreq== (unsigned char)0))) //If it's not a padding byte pair
+                frequencies[symbol] = (unsigned int)syFreq;                     //Then insert it to the freq table
         }   //End of for-loop
         //Print the frequency table
         for (int i = 0; i < maxSize; i++)
@@ -237,6 +238,7 @@ void HUFF::DecodeFile(std::string inputFile, std::string outputFile)
             if (frequencies[i])
                 std::cout << (char)i << ": " << frequencies[i] << std::endl;
         }
+        std::cout << "What is this: " << (unsigned char)0 << std::endl;
     }
 }   //End of DecodeFile method
 
